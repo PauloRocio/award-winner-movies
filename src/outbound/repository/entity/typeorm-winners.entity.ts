@@ -19,7 +19,7 @@ export class TypeORMWinnersEntity extends TypeORMBaseEntity {
   @JoinColumn({ name: 'producer_id' })
   producer: TypeORMProducersEntity;
 
-  @OneToOne(() => TypeORMAwardEditionsEntity, { nullable: false, cascade: false })
+  @ManyToOne(() => TypeORMAwardEditionsEntity, { nullable: false, cascade: false })
   @JoinColumn({ name: 'award_edition_id' })
   awardEdition: TypeORMAwardEditionsEntity;
 
