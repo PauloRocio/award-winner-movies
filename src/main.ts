@@ -9,7 +9,6 @@ async function bootstrap() {
   app.use(bodyParser.json({ limit: '2mb' }));
   app.use(bodyParser.urlencoded({ limit: '2mb', extended: true }));
 
-
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
@@ -17,7 +16,6 @@ async function bootstrap() {
     }),
   );
 
-  
   await app.listen(3000);
 }
 bootstrap();

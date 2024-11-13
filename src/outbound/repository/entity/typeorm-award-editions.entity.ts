@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, Index } from 'typeorm';
+import { Entity, Column, Index } from 'typeorm';
 import { TypeORMBaseEntity } from './typeorm-base.entity';
 
 @Entity('award_editions')
