@@ -5,15 +5,15 @@ import { TypeORMStudiosEntity } from './typeorm-studios.entity';
 import { TypeORMProducersEntity } from './typeorm-producers.entity';
 import { TypeORMAwardEditionsEntity } from './typeorm-award-editions.entity';
 
-@Entity()
+@Entity('winners')
 export class TypeORMWinnersEntity extends TypeORMBaseEntity {
-  @ManyToOne(() => TypeORMMoviesEntity, { nullable: false, cascade: false })
-  @JoinColumn({ name: 'movie_id' })
-  movie: TypeORMMoviesEntity;
+  // @ManyToOne(() => TypeORMMoviesEntity, { nullable: false, cascade: false })
+  // @JoinColumn({ name: 'movie_id' })
+  // movie: TypeORMMoviesEntity;
 
-  @ManyToOne(() => TypeORMStudiosEntity, { nullable: false, cascade: false })
-  @JoinColumn({ name: 'studio_id' })
-  studio: TypeORMStudiosEntity;
+  // @ManyToOne(() => TypeORMStudiosEntity, { nullable: false, cascade: false })
+  // @JoinColumn({ name: 'studio_id' })
+  // studio: TypeORMStudiosEntity;
 
   @ManyToOne(() => TypeORMProducersEntity, { nullable: false, cascade: false })
   @JoinColumn({ name: 'producer_id' })
@@ -23,11 +23,11 @@ export class TypeORMWinnersEntity extends TypeORMBaseEntity {
   @JoinColumn({ name: 'award_edition_id' })
   awardEdition: TypeORMAwardEditionsEntity;
 
-  @Column({ name: 'movie_id', type: 'bigint', nullable: false })
-  movieId: number;
+  // @Column({ name: 'movie_id', type: 'bigint', nullable: false })
+  // movieId: number;
 
-  @Column({ name: 'studio_id', type: 'bigint', nullable: false })
-  studioId: number;
+  // @Column({ name: 'studio_id', type: 'bigint', nullable: false })
+  // studioId: number;
 
   @Column({ name: 'producer_id', type: 'bigint', nullable: false })
   producerId: number;

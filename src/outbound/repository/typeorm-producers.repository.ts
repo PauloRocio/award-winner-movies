@@ -7,7 +7,15 @@ import { ProducersRepository } from '../../port/producers.repository';
 export class TypeORMProducersRepository
     extends BaseRepository<TypeORMProducersEntity>
 {
-    async saveProducers(params: ProducersRepository.Params): Promise<ProducersRepository.Result> {
+    async saveProducers(params: ProducersRepository.SaveProducers.Params): Promise<ProducersRepository.SaveProducers.Result> {
         return await this.save(params);
+    }
+
+    async findById(params: ProducersRepository.FindById.Params): Promise<ProducersRepository.FindById.Result> {
+        return await this.findOne(params);
+    }
+
+    async findProducersByName(name: string): Promise<ProducersRepository.FindById.Result> {
+        return await this.findOne({ where: { name } });
     }
 }

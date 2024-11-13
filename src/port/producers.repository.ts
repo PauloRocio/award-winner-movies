@@ -1,20 +1,33 @@
 export interface ProducersRepository {
-    saveProducers(params: ProducersRepository.Params): Promise<ProducersRepository.Result>;
+    saveProducers(params: ProducersRepository.SaveProducers.Params): Promise<ProducersRepository.SaveProducers.Result>;
+    findById(params: ProducersRepository.FindById.Params): Promise<ProducersRepository.FindById.Result>;
+    findProducersByName(name: string): Promise<ProducersRepository.FindById.Result>;
 }
 
 export namespace ProducersRepository {
-    export type Params = {
-        name: string;
-        movieId: number;
-        studioId: number;
-    };
+    export namespace SaveProducers {
+        export type Params = {
+            name: string;
+        };
 
-    export type Result = Movie;
+        export type Result = Producer;
 
-    export type Movie = {
-        id: number;
-        name: string;
-        movieId: number;
-        studioId: number;
-    };
+        export type Producer = {
+            id: number;
+            name: string;
+        };
+    }
+
+    export namespace FindById {
+        export type Params = {
+            id: number;
+        };
+
+        export type Result = Producer;
+
+        export type Producer = {
+            id: number;
+            name: string;
+        };
+    }
 }

@@ -1,30 +1,46 @@
-import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
+import { Module, Provider } from '@nestjs/common';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { TypeORMMoviesEntity } from './outbound/repository/entity/typeorm-movies.entity';
-import { TypeORMAwardEditionsEntity } from './outbound/repository/entity/typeorm-award-editions.entity';
-import { TypeORMProducersEntity } from './outbound/repository/entity/typeorm-producers.entity';
-import { TypeORMStudiosEntity } from './outbound/repository/entity/typeorm-studios.entity';
-import { TypeORMWinnersEntity } from './outbound/repository/entity/typeorm-winners.entity';
-import { DataSeederService } from './scripts/typeorm/seed/data-seeder.service';
-import { TypeORMAwardEditionsRepository } from './outbound/repository/typeorm-award-editions.repository';
-import { TypeORMMoviesRepository } from './outbound/repository/typeorm-movies.repository';
-import { TypeORMStudiosRepository } from './outbound/repository/typeorm-studios.repository';
-import { TypeORMProducersRepository } from './outbound/repository/typeorm-producers.repository';
-import { TypeORMWinnersRepository } from './outbound/repository/typeorm-winner.repository';
+import {
+  TypeORMAwardEditionsEntity,
+  TypeORMMoviesEntity,
+  TypeORMProducersEntity,
+  TypeORMStudiosEntity,
+  TypeORMWinnersEntity
+} from './outbound/repository/entity';
+import {
+  TypeORMAwardEditionsRepository, 
+  TypeORMMoviesRepository, 
+  TypeORMStudiosRepository, 
+  TypeORMProducersRepository, 
+  TypeORMWinnersRepository
+} from './outbound/repository';
+import { WinnersController } from './inbound/http/get-winners/get-winners.controller';
+import { PerformGetWinners } from './use-case/get-winners/get-winners';
+import { AwardsFileProcessor } from './inbound/file/awards-file-processor';
+import { PerformCreateAwardEdition } from './use-case/create-award-edition/create-award-edition';
+import { PerformCreateMovie } from './use-case/create-movie/create-movie';
+import { PerformCreateStudios } from './use-case/create-studios/create-studios';
+import { PerformCreateProducers } from './use-case/create-producers/create-producers';
+import { PerformCreateWinners } from './use-case/create-winners/create-winners';
+
+const AwardsFileProcessorProvider: Provider = {
+  provide: AwardsFileProcessor,
+  ...(process.env.MODE !== 'test' ? { useClass: AwardsFileProcessor } : { useValue: null }),
+};
 
 @Module({
   imports: [
     TypeOrmModule.forRoot({
       type: 'sqlite',
-      database: './src/scripts/typeorm/seed/database.sqlite', // Especifica o caminho do arquivo
+      database: ':memory:',
       entities: [TypeORMAwardEditionsEntity, TypeORMMoviesEntity, TypeORMProducersEntity, TypeORMStudiosEntity, TypeORMWinnersEntity],
-      synchronize: true, // Sincroniza as entidades com o banco de dados
+      synchronize: true,
+      logging: false,
     }),
     TypeOrmModule.forFeature([TypeORMAwardEditionsRepository, TypeORMMoviesRepository, TypeORMStudiosRepository, TypeORMProducersRepository, TypeORMWinnersRepository]),
   ],
-  controllers: [AppController],
-  providers: [AppService, DataSeederService],
+  controllers: [WinnersController],
+  providers: [AppService, PerformGetWinners, AwardsFileProcessorProvider, PerformCreateAwardEdition, PerformCreateMovie, PerformCreateStudios, PerformCreateProducers, PerformCreateWinners /*SeederProvider*/],
 })
-export class AppModule {}
+export class AppModule { }

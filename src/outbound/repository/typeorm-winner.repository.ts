@@ -7,7 +7,15 @@ import { WinnersRepository } from '../../port/winners.repository';
 export class TypeORMWinnersRepository
     extends BaseRepository<TypeORMWinnersEntity>
 {
-    async saveWinners(params: WinnersRepository.Params): Promise<WinnersRepository.Result> {
-        return await this.save(params);
+    async saveWinners(params: WinnersRepository.SaveWinners.Params): Promise<WinnersRepository.SaveWinners.Result> {
+        return this.save(params);
+    }
+
+    async findWinners(): Promise<WinnersRepository.FindWinners.Result> {
+        return this.find({  relations: ['awardEdition'] });
+    }
+
+    async findWinnersByProducerIdAndAwardEditionId(params: WinnersRepository.FindByProducerAndAward.Winner): Promise<WinnersRepository.FindByProducerAndAward.Result> {
+        return this.findOne(params);
     }
 }
