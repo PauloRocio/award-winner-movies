@@ -1,4 +1,4 @@
-import { Module, Provider } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import {
@@ -6,14 +6,14 @@ import {
   TypeORMMoviesEntity,
   TypeORMProducersEntity,
   TypeORMStudiosEntity,
-  TypeORMWinnersEntity
+  TypeORMWinnersEntity,
 } from './outbound/repository/entity';
 import {
-  TypeORMAwardEditionsRepository, 
-  TypeORMMoviesRepository, 
-  TypeORMStudiosRepository, 
-  TypeORMProducersRepository, 
-  TypeORMWinnersRepository
+  TypeORMAwardEditionsRepository,
+  TypeORMMoviesRepository,
+  TypeORMStudiosRepository,
+  TypeORMProducersRepository,
+  TypeORMWinnersRepository,
 } from './outbound/repository';
 import { WinnersController } from './inbound/http/get-winners/get-winners.controller';
 import { PerformGetWinners } from './use-case/get-winners/get-winners';
@@ -24,23 +24,39 @@ import { PerformCreateStudios } from './use-case/create-studios/create-studios';
 import { PerformCreateProducers } from './use-case/create-producers/create-producers';
 import { PerformCreateWinners } from './use-case/create-winners/create-winners';
 
-const AwardsFileProcessorProvider: Provider = {
-  provide: AwardsFileProcessor,
-  ...(process.env.MODE !== 'test' ? { useClass: AwardsFileProcessor } : { useValue: null }),
-};
-
 @Module({
   imports: [
     TypeOrmModule.forRoot({
       type: 'sqlite',
       database: ':memory:',
-      entities: [TypeORMAwardEditionsEntity, TypeORMMoviesEntity, TypeORMProducersEntity, TypeORMStudiosEntity, TypeORMWinnersEntity],
+      entities: [
+        TypeORMAwardEditionsEntity,
+        TypeORMMoviesEntity,
+        TypeORMProducersEntity,
+        TypeORMStudiosEntity,
+        TypeORMWinnersEntity,
+      ],
       synchronize: true,
       logging: false,
     }),
-    TypeOrmModule.forFeature([TypeORMAwardEditionsRepository, TypeORMMoviesRepository, TypeORMStudiosRepository, TypeORMProducersRepository, TypeORMWinnersRepository]),
+    TypeOrmModule.forFeature([
+      TypeORMAwardEditionsRepository,
+      TypeORMMoviesRepository,
+      TypeORMStudiosRepository,
+      TypeORMProducersRepository,
+      TypeORMWinnersRepository,
+    ]),
   ],
   controllers: [WinnersController],
-  providers: [AppService, PerformGetWinners, AwardsFileProcessorProvider, PerformCreateAwardEdition, PerformCreateMovie, PerformCreateStudios, PerformCreateProducers, PerformCreateWinners /*SeederProvider*/],
+  providers: [
+    AppService,
+    PerformGetWinners,
+    AwardsFileProcessor,
+    PerformCreateAwardEdition,
+    PerformCreateMovie,
+    PerformCreateStudios,
+    PerformCreateProducers,
+    PerformCreateWinners /*SeederProvider*/,
+  ],
 })
-export class AppModule { }
+export class AppModule {}
